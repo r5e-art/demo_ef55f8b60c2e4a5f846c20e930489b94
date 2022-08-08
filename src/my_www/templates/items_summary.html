@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">
+  Welcome, {{ user.name }}!
+</h1>
+
+<div class="column is-4 is-offset-4">
+    <h3 class="title">Summary</h3>
+    <div class="box">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="notification is-danger">
+                {{ messages[0] }}. Go to <a href="{{ url_for('routes.login') }}">login page</a>.
+            </div>
+        {% endif %}
+        {% endwith %}
+
+        Total cost: {{items_total / 100}}
+        <br/>
+        <a href="{{ url_for('routes.index') }}" class="button is-info is-fullwidth">Back to the list</a>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    links:
+      - postgres:postgres
+    environment:
+      DATABASE_URI:  "postgresql://postgres:2eb0099d-802d-48fe-a709-5857a26b7251@postgres:5432/web_db"
+    volumes:
+      - ./:/app
+  postgres:
+    image: "postgres:latest"
+    environment:
+      POSTGRES_DB: web_db
+      POSTGRES_PASSWORD: 2eb0099d-802d-48fe-a709-5857a26b7251

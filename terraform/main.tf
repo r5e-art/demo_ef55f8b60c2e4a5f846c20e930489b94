@@ -82,3 +82,54 @@ resource "aws_lb_target_group" "www" {
   protocol    = "TCP"
   vpc_id      = local.default_vpc_id
 }
+
+resource "aws_security_group" "www" {
+  name_prefix        = "www"
+  description = "Allow TLS inbound traffic"
+  vpc_id      = local.default_vpc_id
+
+  ingress {
+    description      = "TLS from VPC"
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  ingress {
+    description      = "TLS from VPC"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = "allow_tls"
+  }
+}
+
+resource "aws_lb" "wwww" {
+  name_prefix               = "www"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.www.id]
+  subnets            = ["subnet-0daa678cce8f6198a", "subnet-0d19db1cbb53c4c22", "subnet-0d016f5be84b5267d"]
+
+  enable_deletion_protection = false
+
+  tags = {
+    Environment = "production"
+  }
+}
