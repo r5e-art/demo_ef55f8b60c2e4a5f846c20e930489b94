@@ -8,6 +8,7 @@ services:
       - postgres:postgres
     environment:
       DATABASE_URI:  "postgresql://postgres:2eb0099d-802d-48fe-a709-5857a26b7251@postgres:5432/web_db"
+      BIND_PORT: "5000"
     volumes:
       - ./:/app
   postgres:
